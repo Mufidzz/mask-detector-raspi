@@ -36,11 +36,14 @@ while True:
     _, frame = cam.read()
 
     if q == max_q:
-        face_locations, mask_predict_results = md.detect_face(frame, faceNet, maskNet)
-        q = 0
+        try:
+            face_locations, mask_predict_results = md.detect_face(frame, faceNet, maskNet)
+            q = 0
+        except:
+            q = max_q
     else:
         q = q + 1
-
+       
     if len(face_locations) > 0:
         display.lcd_display_string("I Predicting on You Bitch !!", 1)
 
@@ -54,7 +57,9 @@ while True:
                 while True:
                     td = distance_top.get_distance() 
                     sd = distance_side.get_distance()
-
+                    
+                    display.lcd_display_string("I Predicting your Temperature bitch !!", 1)
+                    
                     if td < 10 and sd < 10:
                         object_temp = temperature.get_object_temperature()
                         
