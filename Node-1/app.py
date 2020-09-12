@@ -1,6 +1,8 @@
 import lib.detect_mask.detect as md
+from lib.modules.distance.distance_sensor import DistanceSensor
 import cv2 as cv
 
+#STATE
 person_detected = False;
 mask_detected = False;
 
@@ -18,6 +20,10 @@ q = max_q
 face_locations = []
 mask_predict_results = []
 
+#MODULES
+distance_x = DistanceSensor(18, 24)
+distance_y = DistanceSensor(4, 17)
+
 while True:
     _, frame = cam.read()
     if q == max_q:
@@ -25,7 +31,6 @@ while True:
         q = 0
     else:
         q = q + 1
-
 
     for (face_location, mask_predict_result) in zip(face_locations, mask_predict_results): 
         (startX, startY, endX, endY) = face_location
