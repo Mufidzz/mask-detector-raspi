@@ -59,39 +59,6 @@ def change_camera_resolution_480p(cam):
 
 # MAIN FUNCTION ==============================================================================
 
-cam = cv.VideoCapture(0)
-change_camera_resolution_480p(cam)
-faceNet, maskNet = load_self_model()
 
-q = 5
-face_locations = []
-mask_predict_results = []
-
-while True:
-    _, frame = cam.read()
-    if q == 5:
-        face_locations, mask_predict_results = detect_face(frame, faceNet, maskNet)
-        q = 0
-    else:
-        q = q + 1
-
-    for (face_location, mask_predict_result) in zip(face_locations, mask_predict_results): 
-        (startX, startY, endX, endY) = face_location
-        (mask, withoutMask) = mask_predict_result
-
-    
-        label = "Mask" if mask > withoutMask else "No Mask"
-        color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
-
-        label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
-
-        cv.putText(frame, label, (startX, startY - 10), cv.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
-        cv.rectangle(frame, (startX, startY), (endX, endY), color, 2)
-
-    cv.imshow("Mask Detector", frame)
-    cli_key = cv.waitKey(5) & 0xFF
-    if cli_key == 27:
-        exit_camera()
-        break
 
 
